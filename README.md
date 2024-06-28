@@ -16,10 +16,22 @@ pnpm install
 bun install
 ```
 
+Next, create a `.env` file to store environment variables:
+
+```env
+// ./.env
+DATABASE_URL=
+AUTH_SECRET=
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+// Add `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` here for Google OAuth.
+```
+
 Next, change the `prisma/schema.prisma` file to add your database and datasource:
 
 - If your database provider is postgresql then use:
   ```prisma
+  // prisma/schema.prisma
   datasource db {
     provider = "postgresql"
     url = env("DATABASE_URL")
@@ -34,9 +46,7 @@ npx prisma generate
 npx prisma db push
 ```
 
-Next, Run
-
-Run the development server:
+Next, Run the development server:
 
 ```bash
 npm run dev
@@ -47,6 +57,8 @@ pnpm dev
 # or
 bun dev
 ```
+
+Note: See `./routes.ts` file and some tweaks that you require for your project.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
