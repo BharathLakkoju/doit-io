@@ -2,7 +2,41 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+This project uses Prisma, NextAuth and any Database of your preference.
+
+First, Install all the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Next, change the `prisma/schema.prisma` file to add your database and datasource:
+
+- If your database provider is postgresql then use:
+  ```prisma
+  datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+  }
+  ```
+
+Next, Run `prisma generate` to create a PrismaClient:
+
+```bash
+npm i @prisma/client
+npx prisma generate
+npx prisma db push
+```
+
+Next, Run
+
+Run the development server:
 
 ```bash
 npm run dev
