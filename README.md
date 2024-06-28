@@ -29,14 +29,15 @@ AUTH_GITHUB_SECRET=
 
 Next, change the `prisma/schema.prisma` file to add your database and datasource:
 
-- If your database provider is postgresql then use:
-  ```prisma
-  // prisma/schema.prisma
-  datasource db {
-    provider = "postgresql"
-    url = env("DATABASE_URL")
-  }
-  ```
+If your database provider is postgresql then use:
+
+```prisma
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+```
 
 Next, Run `prisma generate` to create a PrismaClient:
 
