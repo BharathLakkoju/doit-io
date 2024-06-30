@@ -14,6 +14,7 @@ export const authRoutes: string[] = [
   "/signup",
   "/error",
   "/api/auth/error",
+  "/reset",
 ];
 /**
  * The prefix for API authentication routes.

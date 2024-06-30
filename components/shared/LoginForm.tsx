@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -47,6 +46,7 @@ export function LoginForm() {
   });
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setFormError("");
+    setFormSuccess("");
     setPending(() => {
       login(values).then((data) => {
         setFormError(data?.error);
@@ -110,7 +110,7 @@ export function LoginForm() {
                   )}
                 />
                 <Link
-                  href="#"
+                  href="/reset"
                   aria-disabled={pending}
                   className="ml-auto mr-1 inline-block text-xs text-blue-300 underline underline-offset-4"
                 >

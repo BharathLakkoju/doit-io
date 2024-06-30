@@ -2,7 +2,7 @@
 import z from "zod";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import { LoginSchema, SignupSchema } from "@/schemas";
+import { LoginSchema, ResetSchema, SignupSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { signIn, signOut } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
@@ -16,7 +16,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const { email, password } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "No user found! Please Create an account!" };
+    return { error: "No user found! Please Create an account" };
   }
   try {
     await signIn("credentials", {
@@ -56,9 +56,7 @@ export const signup = async (values: z.infer<typeof SignupSchema>) => {
       password: hashedPwd,
     },
   });
-  // TODO: send verification token email.
-
-  return { success: "User Created! Please verify your Email." };
+  return { success: "User Created" };
 };
 
 export const signout = async () => {
@@ -67,4 +65,20 @@ export const signout = async () => {
     return Response.redirect(DEFAULT_LOGIN_REDIRECT);
   }
   return { error: "Something went wrong!" };
+};
+
+export const reset = async (values: z.infer<typeof ResetSchema>) => {
+  const validatedFields = ResetSchema.safeParse(values);
+  if (!validatedFields.success) return { error: "Invalid Fields!" };
+  const { email, password } = validatedFields.data;
+  const hashedPwd = await bcrypt.hash(password, 10);
+  const existingUser = await getUserByEmail(email);
+  if (!existingUser || !existingUser.email || !existingUser.password) {
+    return { error: "No user found! Please create an account" };
+  }
+  await db.user.update({
+    where: { email: email },
+    data: { password: hashedPwd },
+  });
+  return { success: "Password Updated! Please Login." };
 };
