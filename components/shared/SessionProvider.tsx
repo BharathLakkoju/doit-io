@@ -9,7 +9,11 @@ export default async function SessionProvider({
   const session = await auth();
   return (
     <>
-      <Navbar isLoggedIn={!!session} userName={session?.user?.name} />
+      <Navbar
+        isLoggedIn={!!session}
+        userName={session?.user?.name}
+        userImage={session?.user?.image}
+      />
       {children}
     </>
   );

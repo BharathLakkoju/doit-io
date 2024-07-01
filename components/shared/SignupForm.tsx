@@ -26,11 +26,9 @@ import { SignupSchema } from "@/schemas";
 import { signup } from "@/actions/auth";
 import { useState, useTransition } from "react";
 import GithubLogin from "@/components/shared/GithubLogin";
-import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
   const [pending, setPending] = useTransition();
-  const router = useRouter();
   const [formError, setFormError] = useState<string | undefined>();
   const [formSuccess, setFormSuccess] = useState<string | undefined>();
   const form = useForm<z.infer<typeof SignupSchema>>({
@@ -45,14 +43,10 @@ export default function SignupForm() {
     setFormError("");
     setFormSuccess("");
     setPending(() => {
-      signup(values)
-        .then((data) => {
-          setFormError(data?.error);
-          setFormSuccess(data?.success);
-        })
-        .then(() => {
-          router.push("/login");
-        });
+      signup(values).then((data) => {
+        setFormError(data?.error);
+        setFormSuccess(data?.success);
+      });
     });
   };
   return (
@@ -77,6 +71,7 @@ export default function SignupForm() {
                       <FormControl>
                         <Input
                           {...field}
+                          disabled={pending}
                           className="placeholder:text-gray-400 focus:border-blue-500"
                           id="name"
                           placeholder="John Doe"
@@ -101,6 +96,7 @@ export default function SignupForm() {
                           id="email"
                           type="email"
                           placeholder="johndoe@email.com"
+                          disabled={pending}
                           required
                         />
                       </FormControl>
@@ -120,6 +116,7 @@ export default function SignupForm() {
                           <Input
                             {...field}
                             id="password"
+                            disabled={pending}
                             type="password"
                             className="placeholder:text-gray-400 focus:border-blue-500"
                             placeholder="******"

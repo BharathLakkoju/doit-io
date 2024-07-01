@@ -5,7 +5,7 @@ import React from "react";
 export default function page() {
   return (
     <>
-      <div className="flex justify-center items-start pt-16 ">
+      <div className="flex justify-center items-start pt-32 ">
         <LoginForm />
       </div>
     </>
