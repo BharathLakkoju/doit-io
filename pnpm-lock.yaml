@@ -56,9 +56,6 @@ importers:
       framer-motion:
         specifier: ^11.2.12
         version: 11.2.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      lucide:
-        specifier: ^0.399.0
-        version: 0.399.0
       lucide-react:
         specifier: ^0.399.0
         version: 0.399.0(react@18.3.1)
@@ -77,9 +74,6 @@ importers:
       react-hook-form:
         specifier: ^7.52.0
         version: 7.52.0(react@18.3.1)
-      sass:
-        specifier: ^1.77.6
-        version: 1.77.6
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -988,9 +982,6 @@ packages:
     resolution: {integrity: sha512-UyTNa3djBISdzL2UktgCrESXexQXaDQWi/WsDkbw6fBFfHlapajR58WoR+gxQ4laxfEyiHmoFrEIM3V+5XOVQg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  lucide@0.399.0:
-    resolution: {integrity: sha512-dC8nkK01ZtPh5PENjI/ny/10fLY5S/TmWTlmgQbqUfph8KjwPvhYwzAaXwX9BICeV1DWJUocMe2lIeg7vQc1og==}
 
   make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -2210,7 +2201,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  immutable@4.3.6: {}
+  immutable@4.3.6:
+    optional: true
 
   inflight@1.0.6:
     dependencies:
@@ -2270,8 +2262,6 @@ snapshots:
   lucide-react@0.399.0(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  lucide@0.399.0: {}
 
   make-dir@3.1.0:
     dependencies:
@@ -2538,6 +2528,7 @@ snapshots:
       chokidar: 3.6.0
       immutable: 4.3.6
       source-map-js: 1.2.0
+    optional: true
 
   scheduler@0.23.2:
     dependencies:
