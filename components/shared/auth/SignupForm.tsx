@@ -20,12 +20,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import z from "zod";
-import FormSuccess from "@/components/shared/FormSuccess";
-import FormError from "@/components/shared/FormError";
+import FormSuccess from "@/components/shared/auth/FormSuccess";
+import FormError from "@/components/shared/auth/FormError";
 import { SignupSchema } from "@/schemas";
 import { signup } from "@/actions/auth";
 import { useState, useTransition } from "react";
-import GithubLogin from "@/components/shared/GithubLogin";
+import GithubLogin from "@/components/shared/auth/GithubLogin";
 
 export default function SignupForm() {
   const [pending, setPending] = useTransition();

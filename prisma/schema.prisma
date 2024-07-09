@@ -13,17 +13,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TaskStatus {
+  TOBE
+  IN_PROGRESS
+  COMPLETED
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
+  id            String      @id @default(cuid())
+  name          String
+  email         String      @unique
   image         String?
   password      String?
   emailVerified String?
   accounts      Account[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  tasks         Task[]      @relation("UserTasks")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  guestbook     guestbook[]
 }
 
 model Account {
@@ -38,11 +45,35 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+}
+
+model Task {
+  id           String     @id @default(cuid())
+  title        String
+  description  String?
+  status       TaskStatus @default(TOBE)
+  isImportant  Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  userId       String
+  user         User       @relation("UserTasks", fields: [userId], references: [id])
+  parentTaskId String?
+  parentTask   Task?      @relation("SubTasks", fields: [parentTaskId], references: [id])
+  subTasks     Task[]     @relation("SubTasks")
+
+  @@index([userId])
+}
+
+model guestbook {
+  id        String   @id @default(cuid())
+  text      String
+  userName  String
+  userId    String
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

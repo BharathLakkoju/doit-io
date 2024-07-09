@@ -3,7 +3,12 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes: string[] = ["/", "/support"];
+export const publicRoutes: string[] = [
+  "/",
+  "/support",
+  "/contact",
+  "/guestbook",
+];
 /**
  * An array of routes that are used for authentication.
  * These routes will redirect logged in users to -> /settings
@@ -27,3 +32,6 @@ export const apiAuthPrefix: string = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT: string = "/dashboard";
+/**
+ * The default error page
+ */

@@ -1,5 +1,5 @@
 "use client";
-import SignupForm from "@/components/shared/SignupForm";
+import SignupForm from "@/components/shared/auth/SignupForm";
 
 export default function page() {
   return (

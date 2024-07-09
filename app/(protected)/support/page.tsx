@@ -5,7 +5,7 @@ import { CircleArrowOutUpRight } from "lucide-react";
 export default function page() {
   return (
     <>
-      <div className="my-24 md:my-32  mx-[5%] md:mx-[20%] flex flex-col justify-center gap-5">
+      <div className="my-24 md:my-32 mx-[5%] md:mx-[20%] flex flex-col justify-center gap-5">
         <span className="font-bold text-4xl md:text-6xl">Support</span>
         <Separator className="bg-gray-500 my-5" />
         <span className="text-lg md:text-2xl font-bold">
@@ -29,7 +29,7 @@ export default function page() {
         <Separator className="bg-gray-400" />
         <Link
           href="/login"
-          className="hover:underline text-lg font-semibold hover:underline-offset-4 flex items-center gap-1"
+          className="hover:underline w-[250px] text-lg font-semibold hover:underline-offset-4 flex items-center gap-1"
         >
           Creating an account <CircleArrowOutUpRight className="w-4 h-4" />
         </Link>

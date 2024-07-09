@@ -1,5 +1,5 @@
 "use client";
-import { LoginForm } from "@/components/shared/LoginForm";
+import { LoginForm } from "@/components/shared/auth/LoginForm";
 import React from "react";
 
 export default function page() {

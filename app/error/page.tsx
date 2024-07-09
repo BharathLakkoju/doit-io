@@ -1,4 +1,4 @@
-import ErrorCard from "@/components/shared/ErrorCard";
+import ErrorCard from "@/components/shared/Error/ErrorCard";
 
 export default function AuthErrorPage() {
   return (

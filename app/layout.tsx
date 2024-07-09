@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Noto_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/shared/SessionProvider";
+import { Toaster } from "@/components/ui/toaster";
 
-const openSans = JetBrains_Mono({ weight: "400", subsets: ["latin"] });
+const openSans = Noto_Sans_Mono({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "DoiT.io",
@@ -16,10 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // const session = await auth();
+  // const errorComp: ErrorComponent = <ErrorCard error={"error"} />;
   return (
     <html lang="en">
       <body className={`${openSans.className} text-gray-300 bg-zinc-800`}>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          {/* <ErrorBoundary errorComponent={errorComp}>{children}</ErrorBoundary> */}
+          {children}
+          <Toaster />
+        </SessionProvider>
       </body>
     </html>
   );

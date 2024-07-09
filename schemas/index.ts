@@ -29,3 +29,19 @@ export const ResetSchema = z.object({
     message: "Minimum 6 characters!",
   }),
 });
+
+export const commentSchema = z.object({
+  email: z.string().email({
+    message: "Email does not exist",
+  }),
+  text: z.string().min(1, {
+    message: "Text can't be empty.",
+  }),
+});
+
+// export const updateOrAddDataSchema = z.object({
+//   name: z.string().min(1, {
+//     message: "Name cannot be empty!",
+//   }),
+
+// });

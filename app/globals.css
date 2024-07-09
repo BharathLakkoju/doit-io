@@ -76,14 +76,12 @@
   animation: slide-right infinite 150ms ease-in-out;
 }
 
-@keyframes slide-right {
-  0%,
-  100% {
-    transform: translate(0, 0);
+@layer base {
+  *::-webkit-scrollbar {
+    display: none;
   }
-
-  50% {
-    transform: translate(10px, 0);
+  * {
+    scrollbar-width: 0;
   }
 }
 

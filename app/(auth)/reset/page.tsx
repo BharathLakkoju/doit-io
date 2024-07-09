@@ -1,4 +1,4 @@
-import ResetForm from "@/components/shared/ResetForm";
+import ResetForm from "@/components/shared/auth/ResetForm";
 
 export default function page() {
   return (

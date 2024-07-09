@@ -35,19 +35,21 @@ export default function Navbar({
     <>
       <div className="text-white w-full h-14 md:h-20 md:text-xl text-lg flex justify-around items-center fixed z-10 top-0 left-0 bg-black/10 backdrop-blur-sm border-b border-gray-400/10">
         <div className="font-extrabold text-xl md:text-3xl">
-          <Link href="/">DoiT.io</Link>
+          <Link className="focus:outline-none" href="/">
+            DoiT.io
+          </Link>
         </div>
         <div className="md:max-w-96 md-w-auto flex justify-between items-center gap-5 font-bold">
           {isLoggedIn && userName ? (
             <div className="md:max-w-96 md-w-auto flex justify-between items-center gap-5 font-bold">
               <Link
-                className="rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
+                className="focus:outline-none rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
                 href="/dashboard"
               >
                 DoesiT
               </Link>
               <Link
-                className="rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
+                className="focus:outline-none rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
                 href="#"
               >
                 MarkiT
@@ -85,10 +87,19 @@ export default function Navbar({
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
-                    <Link href="/settings">Settings</Link>
+                    <Link className="w-full" href="/settings">
+                      Settings
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
-                    <Link href="/support">Support</Link>
+                    <Link className="w-full" href="/support">
+                      Support
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
+                    <Link className="w-full" href="/guestbook">
+                      Guestbook
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <form className="w-full" action={handleSignout}>
@@ -106,7 +117,7 @@ export default function Navbar({
               className="px-3 rounded-md pt-1 pb-3 hover:text-blue-300 hover:underline-offset-8 hover:underline text-center"
               href="/login"
             >
-              LoginiT
+              Login
             </Link>
           )}
         </div>

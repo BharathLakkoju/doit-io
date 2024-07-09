@@ -20,13 +20,13 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import z from "zod";
-import FormError from "@/components/shared/FormError";
+import FormError from "@/components/shared/auth/FormError";
 import { LoginSchema } from "@/schemas";
 import { login } from "@/actions/auth";
 import { useState, useTransition } from "react";
-import GithubLogin from "@/components/shared/GithubLogin";
+import GithubLogin from "@/components/shared/auth/GithubLogin";
 import { useSearchParams } from "next/navigation";
-import FormSuccess from "@/components/shared/FormSuccess";
+import FormSuccess from "@/components/shared/auth/FormSuccess";
 
 export function LoginForm() {
   const searchParams = useSearchParams();

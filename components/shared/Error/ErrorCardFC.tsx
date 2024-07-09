@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
-export default function ErrorCard() {
+const ErrorCardFC = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center mt-16 gap-10 min-h-[500px]">
@@ -19,4 +19,6 @@ export default function ErrorCard() {
       </div>
     </>
   );
-}
+};
+
+export default ErrorCardFC;
