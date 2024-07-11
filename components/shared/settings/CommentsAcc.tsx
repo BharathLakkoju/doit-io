@@ -20,14 +20,15 @@ export default async function CommentsAcc({
             Your Comments
           </AccordionTrigger>
           <AccordionContent>
-            <div className="grid gap-2 grid-flow-row">
+            <span>Scroll to view all your comments</span>
+            <div className="grid gap-2 grid-flow-row overflow-y-auto h-40 p-2 border-gray-400 border">
               {data &&
                 data.map((item, index) => (
                   <div
                     className="flex gap-5 p-2 rounded-md justify-start items-center"
                     key={index}
                   >
-                    <span className="flex justify-end">
+                    <span className="flex justify-end w-48">
                       {new Date(item.createdAt).toLocaleDateString()} -{" "}
                       {new Date(item.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",

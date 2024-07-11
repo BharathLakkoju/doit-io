@@ -1,5 +1,13 @@
-import React from "react";
+import { auth } from "@/auth";
+import Dashboard from "@/components/shared/dashboard/Dashboard";
 
-export default function page() {
-  return <div className="mt-16 md:mt-20">page</div>;
+export default async function page() {
+  const session = await auth();
+  return (
+    <>
+      <div>
+        <Dashboard session={session} />
+      </div>
+    </>
+  );
 }
