@@ -8,6 +8,7 @@ export const publicRoutes: string[] = [
   "/support",
   "/contact",
   "/guestbook",
+  "/feedback",
 ];
 /**
  * An array of routes that are used for authentication.
