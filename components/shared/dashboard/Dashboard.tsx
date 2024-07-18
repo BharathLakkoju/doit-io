@@ -1,87 +1,107 @@
 "use client";
-import { Session } from "next-auth";
-import { LucideSortDesc, ChevronDown, MoreHorizontal } from "lucide-react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import React from "react";
-import { TaskType, TaskStatusEnum } from "@/types/Types";
-import { StarFilledIcon } from "@radix-ui/react-icons";
+import React, { useEffect, useState } from "react";
+import { TaskType, TaskStatusEnum, TaskPriorityEnum } from "@/types";
+import TodoItems from "@/components/shared/dashboard/TodoItems";
+import { AddOrDelete } from "@/components/shared/dashboard/AddOrDelete";
+import { deleteTask } from "@/actions/tasks";
+import { useRouter } from "next/navigation";
 
-const data: TaskType[] = [
-  {
-    id: "msgkaklsd",
-    title: "Task 1",
-    status: TaskStatusEnum.TOBE,
-    isImportant: false,
-    createdAt: new Date("2024-07-10T18:42:02.786Z"),
-    updatedAt: new Date("2024-07-10T18:42:02.786Z"),
-    userId: "abcd",
-  },
-  {
-    id: "msgkaklse",
-    title: "Task 2",
-    status: TaskStatusEnum.IN_PROGRESS,
-    isImportant: true,
-    createdAt: new Date("2024-07-10T18:42:02.786Z"),
-    updatedAt: new Date("2024-07-10T18:42:02.786Z"),
-    userId: "abcd",
-  },
-];
+const statusOrder = {
+  [TaskStatusEnum.TOBE]: 1,
+  [TaskStatusEnum.IN_PROGRESS]: 2,
+  [TaskStatusEnum.COMPLETED]: 3,
+};
 
-export default function Dashboard({ session }: { session: Session | null }) {
+export default function Dashboard({
+  taskdata,
+  name,
+  id,
+}: {
+  taskdata: TaskType[];
+  name: string;
+  id: string;
+}) {
+  const router = useRouter();
+  const filterAndSortTasks = (tasks: TaskType[], status: string | null) => {
+    if (!status) return tasks;
+    return tasks.sort((a, b) => {
+      const astatus = statusOrder[a.status as keyof typeof statusOrder];
+      const bstatus = statusOrder[b.status as keyof typeof statusOrder];
+      if (a.status === status) return -1;
+      if (b.status === status) return 1;
+      return (
+        (astatus - bstatus) *
+        (statusOrder[status as keyof typeof statusOrder] === 1 ? 1 : -1)
+      );
+    });
+  };
+
+  const todoTasks = filterAndSortTasks(
+    taskdata.filter((task) => task.status === TaskStatusEnum.TOBE),
+    TaskStatusEnum.TOBE
+  );
+  const progressTasks = filterAndSortTasks(
+    taskdata.filter((task) => task.status === TaskStatusEnum.IN_PROGRESS),
+    TaskStatusEnum.IN_PROGRESS
+  );
+  const doneTasks = filterAndSortTasks(
+    taskdata.filter((task) => task.status === TaskStatusEnum.COMPLETED),
+    TaskStatusEnum.COMPLETED
+  );
+
+  const [checked, isChecked] = useState(false);
+  const [checkedList, setCheckedList] = useState<TaskType["id"][]>([]);
+
+  const handleCheckboxChange = (task: TaskType) => {
+    isChecked(!checked);
+    if (checkedList.findIndex((id) => id === task.id) > -1) {
+      setCheckedList(checkedList.filter((id) => id !== task.id));
+    } else {
+      setCheckedList([...checkedList, task.id]);
+    }
+  };
+
+  const handleDelete = () => {
+    deleteTask(checkedList).then((data) => {
+      // alert(data?.success); // use toast
+      router.refresh();
+    });
+  };
+
   return (
     <>
-      <div className="my-24 md:my-32 mx-[5%] md:mx-[20%]">
-        <span className="text-gray-400">
-          Welcome back,{" "}
-          <span className="font-semibold text-gray-300">
-            {session?.user?.name}
+      <div className="my-16 md:my-28 mx-[5%] md:mx-[20%]">
+        <div className="flex items-center justify-between">
+          <span className="text-gray-400">
+            Welcome back,{" "}
+            <span className="font-semibold text-gray-300">{name}</span>
           </span>
-        </span>
-        <div>
-          {data.map((task) => (
-            <div key={task.id} className="flex items-center mb-4 gap-5">
-              <div className="flex items-center mr-4">
-                <span className="ml-2">{task.title}</span>
-                {task.isImportant && (
-                  <span className="ml-2 text-red-500">
-                    <StarFilledIcon className="text-gold-500" />
-                  </span>
-                )}
-                <span className="ml-5">{task.createdAt.toLocaleDateString() + " - " + task.updatedAt.toLocaleDateString()}</span>
-              </div>
-            </div>
-          ))}
+          <div>
+            <AddOrDelete id={id} handleDelete={handleDelete} />
+          </div>
+        </div>
+        <div className="flex items-start justify-center gap-10 mt-10">
+          <TodoItems
+            taskdata={todoTasks}
+            heading="To Do"
+            type="TOBE"
+            checkedList={checkedList}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+          <TodoItems
+            taskdata={progressTasks}
+            heading="In Progress"
+            type="IN_PROGRESS"
+            checkedList={checkedList}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+          <TodoItems
+            taskdata={doneTasks}
+            heading="Completed"
+            type="COMPLETED"
+            checkedList={checkedList}
+            handleCheckboxChange={handleCheckboxChange}
+          />
         </div>
       </div>
     </>

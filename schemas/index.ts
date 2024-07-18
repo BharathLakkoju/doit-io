@@ -50,20 +50,22 @@ export const taskSchema = z.object({
   title: z.string().min(1, {
     message: "Title can't be empty",
   }),
-  description: z.string().optional(),
-  status: z.enum(["TOBE", "IN_PROGRESS", "COMPLETED"]).optional(),
-  isImportant: z.boolean().optional(),
+  description: z.string(),
+  status: z.enum(["TOBE", "IN_PROGRESS", "COMPLETED"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
+  tags: z.array(z.string()),
+  isImportant: z.boolean(),
   userId: z.string().min(1, {
     message: "Zod Error",
   }),
-  parentTaskId: z.string().optional(),
 });
 
 export const SubtaskSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
-  description: z.string().optional(),
-  status: z.enum(["TOBE", "IN_PROGRESS", "COMPLETED"]).optional(),
-  isImportant: z.boolean().optional(),
+  description: z.string(),
+  status: z.enum(["TOBE", "IN_PROGRESS", "COMPLETED"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
+  isImportant: z.boolean(),
   userId: z.string().min(1, { message: "User ID is required" }),
   parentTaskId: z.string().min(1, { message: "Parent Task ID is required" }),
 });

@@ -19,6 +19,12 @@ enum TaskStatus {
   COMPLETED
 }
 
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model User {
   id            String      @id @default(cuid())
   name          String
@@ -53,18 +59,17 @@ model Account {
 }
 
 model Task {
-  id           String     @id @default(cuid())
-  title        String
-  description  String?
-  status       TaskStatus @default(TOBE)
-  isImportant  Boolean    @default(false)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  userId       String
-  user         User       @relation("UserTasks", fields: [userId], references: [id])
-  parentTaskId String?
-  parentTask   Task?      @relation("SubTasks", fields: [parentTaskId], references: [id])
-  subTasks     Task[]     @relation("SubTasks")
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  status      TaskStatus   @default(TOBE)
+  tags        String[]
+  priority    TaskPriority @default(LOW)
+  isImportant Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  userId      String
+  user        User         @relation("UserTasks", fields: [userId], references: [id])
 
   @@index([userId])
 }

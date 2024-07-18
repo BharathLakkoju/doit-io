@@ -9,16 +9,24 @@ export interface CommentType {
 }
 
 export enum TaskStatusEnum {
-  TOBE,
-  IN_PROGRESS,
-  COMPLETED,
+  TOBE = "TOBE",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+}
+
+export enum TaskPriorityEnum {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
 }
 
 export interface TaskType {
   id: string;
   title: string;
   description?: string;
+  tags: string[];
   status: TaskStatusEnum | TaskStatusEnum.TOBE;
+  priority: TaskPriorityEnum | TaskPriorityEnum.LOW;
   isImportant: boolean | false;
   createdAt: Date;
   updatedAt: Date;

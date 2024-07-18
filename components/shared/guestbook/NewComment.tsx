@@ -18,7 +18,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState, useTransition } from "react";
+import { use, useState, useTransition } from "react";
 import z from "zod";
 import { commentSchema } from "@/schemas";
 import { comment } from "@/actions/comment";
@@ -43,6 +43,7 @@ export function NewComment({
   const [pending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | undefined>();
   const [formSuccess, setFormSuccess] = useState<string | undefined>();
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const form = useForm<z.infer<typeof commentSchema>>({
     resolver: zodResolver(commentSchema),
@@ -54,6 +55,7 @@ export function NewComment({
 
   const onSubmit = async (values: z.infer<typeof commentSchema>) => {
     startTransition(async () => {
+      setOpen(false);
       try {
         const data = await comment(values);
         if (data?.error) {
@@ -84,7 +86,7 @@ export function NewComment({
 
   return (
     <div className="bg-zinc-900">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="secondary">{trigger}</Button>
         </DialogTrigger>

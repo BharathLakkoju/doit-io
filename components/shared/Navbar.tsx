@@ -33,7 +33,7 @@ export default function Navbar({
 
   return (
     <>
-      <div className="text-white w-full h-14 md:h-20 md:text-xl text-lg flex justify-around items-center fixed z-10 top-0 left-0 bg-black/10 backdrop-blur-sm border-b border-gray-400/10">
+      <div className="text-white w-full h-14 md:h-20 md:text-xl text-lg flex justify-around items-center fixed z-50 top-0 left-0 bg-black/10 backdrop-blur-sm border-b border-gray-400/10">
         <div className="font-extrabold text-xl md:text-3xl">
           <Link className="focus:outline-none" href="/">
             DoiT.io

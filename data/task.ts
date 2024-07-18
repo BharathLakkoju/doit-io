@@ -2,19 +2,19 @@ import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { TaskStatus } from "@prisma/client";
 
-// export const getTasks = async (email: string) => {
-//   try {
-//     const existingUser = await getUserByEmail(email);
-//     const tasks = await db.task.findMany({
-//       where: {
-//         userId: existingUser?.id,
-//       },
-//     });
-//     return tasks;
-//   } catch (error) {
-//     return null;
-//   }
-// };
+export const getTasks = async (email: string) => {
+  try {
+    const existingUser = await getUserByEmail(email);
+    const tasks = await db.task.findMany({
+      where: {
+        userId: existingUser?.id,
+      },
+    });
+    return tasks;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const getImpTasks = async (email: string) => {
   try {

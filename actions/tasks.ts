@@ -10,7 +10,7 @@ export const AddTask = async (values: z.infer<typeof taskSchema>) => {
   if (!validatedFields.success) {
     return { error: "Invalid Fields" };
   }
-  const { title, description, status, isImportant, userId, parentTaskId } =
+  const { title, description, status, tags, isImportant, userId, priority } =
     validatedFields.data;
   const existingUser = await getUserById(userId);
   if (!existingUser || !existingUser.id) {
@@ -20,37 +20,25 @@ export const AddTask = async (values: z.infer<typeof taskSchema>) => {
     data: {
       title,
       description,
+      tags,
       status,
+      priority,
       isImportant,
       userId,
-      parentTaskId,
     },
   });
-  revalidatePath("/");
+  revalidatePath("/dashboard");
   return { success: "Task Created!" };
 };
 
-export const AddSubTask = async (values: z.infer<typeof SubtaskSchema>) => {
-  const validatedFields = SubtaskSchema.safeParse(values);
-  if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
-  }
-  const { userId, title, description, status, isImportant, parentTaskId } =
-    validatedFields.data;
-  const existingUser = await getUserById(userId);
-  if (!existingUser || !existingUser.id) {
-    return { error: "No user found! Please create an account" };
-  }
-  await db.task.create({
-    data: {
-      title,
-      description,
-      status,
-      isImportant,
-      parentTaskId,
-      userId,
+export const deleteTask = async (id: string[]) => {
+  await db.task.deleteMany({
+    where: {
+      id: {
+        in: id,
+      },
     },
   });
-  revalidatePath("/");
-  return { success: "Sub Task Added." };
+  revalidatePath("/dashboard");
+  return { success: "Task(s) Deleted!" };
 };

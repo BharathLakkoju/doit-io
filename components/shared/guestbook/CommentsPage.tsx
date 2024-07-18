@@ -1,5 +1,5 @@
 "use client";
-import { CommentType } from "@/types/Types";
+import { CommentType } from "@/types";
 
 export default function CommentsPage({ data }: { data: CommentType[] | null }) {
   return (
