@@ -4,8 +4,10 @@ import { db } from "@/lib/db";
 import { taskSchema, SubtaskSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { revalidatePath } from "next/cache";
+// import { useRouter } from "next/router";
 
 export const AddTask = async (values: z.infer<typeof taskSchema>) => {
+  // const router = useRouter();
   const validatedFields = taskSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid Fields" };
@@ -16,29 +18,36 @@ export const AddTask = async (values: z.infer<typeof taskSchema>) => {
   if (!existingUser || !existingUser.id) {
     return { error: "No user found! Please create an account" };
   }
-  await db.task.create({
-    data: {
-      title,
-      description,
-      tags,
-      status,
-      priority,
-      isImportant,
-      userId,
-    },
-  });
-  revalidatePath("/dashboard");
-  return { success: "Task Created!" };
+  try {
+    await db.task.create({
+      data: {
+        title,
+        description,
+        tags,
+        status,
+        priority,
+        isImportant,
+        userId,
+      },
+    });
+    revalidatePath("/", "layout");
+  } catch (error) {
+    return { error: "Something went wrong!" };
+  }
+  // router.reload();
 };
 
 export const deleteTask = async (id: string[]) => {
-  await db.task.deleteMany({
-    where: {
-      id: {
-        in: id,
+  try {
+    await db.task.deleteMany({
+      where: {
+        id: {
+          in: id,
+        },
       },
-    },
-  });
-  revalidatePath("/dashboard");
-  return { success: "Task(s) Deleted!" };
+    });
+    revalidatePath("/", "layout");
+  } catch (err) {
+    return { error: "Something went wrong!" };
+  }
 };

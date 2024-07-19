@@ -38,7 +38,7 @@ export default function TodoItems({
 
   const filterAndSortTasks = (tasks: TaskType[], priority: string | null) => {
     if (!priority) return tasks;
-    return tasks.sort((a, b) => {
+    return tasks?.sort((a, b) => {
       const aPriority = priorityOrder[a.priority as keyof typeof priorityOrder];
       const bPriority = priorityOrder[b.priority as keyof typeof priorityOrder];
       if (a.priority === priority) return -1;
@@ -57,10 +57,10 @@ export default function TodoItems({
 
   return (
     <>
-      <div className="w-[400px] h-full rounded-md flex flex-col items-center justify-start">
+      <div className="w-[400px] h-[650px] rounded-md flex flex-col items-center justify-start">
         <div className="w-96 flex justify-between items-center gap-5 p-2 z-10">
           <div className="flex justify-start items-center gap-5">
-            <Badge variant="secondary">{taskdata.length}</Badge>
+            <Badge variant="secondary">{taskdata?.length | 0}</Badge>
             <span className="font-bold text-lg">{heading}</span>
           </div>
           <div className="flex gap-1">
@@ -81,10 +81,10 @@ export default function TodoItems({
           </div>
         </div>
         <Separator className="mb-2" />
-        <div className="w-96 flex flex-col gap-5 justify-start items-center overflow-y-auto pt-5">
-          {sortedTasks.map((task) => (
+        <div className="max-w-96 flex flex-col gap-5 justify-start items-center overflow-y-auto pt-5">
+          {sortedTasks?.map((task) => (
             <div
-              className=" w-[380px] rounded-md p-2 border border-gray-400 bg-zinc-900 flex flex-col gap-2"
+              className="max-w-[380px] min-w-[300px] rounded-xl p-2 border border-gray-400 bg-zinc-900 flex flex-col gap-2"
               key={task.id}
             >
               <div className="w-full flex justify-between items-center">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +38,8 @@ import { TaskPriorityEnum } from "@/types";
 import { TaskPriority } from "@prisma/client";
 import FormError from "../auth/FormError";
 import { useRouter } from "next/navigation";
+import { getTasks, getTasksById } from "@/data/task";
+import { toast } from "sonner";
 
 export function AddOrDelete({
   id,
@@ -48,7 +50,7 @@ export function AddOrDelete({
 }) {
   const router = useRouter();
   const [error, setError] = React.useState<string | undefined>("");
-  const [success, setSuccess] = React.useState<string | undefined>("");
+  const [isLoading, setIsLoading] = React.useTransition();
   const [isOpen, setIsOpen] = React.useState(false);
   const Addform = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -62,18 +64,22 @@ export function AddOrDelete({
       tags: [""],
     },
   });
+
   const onSubmit = (values: z.infer<typeof taskSchema>) => {
-    console.log("called");
     setError("");
-    setSuccess("");
-    setIsOpen(false);
     AddTask(values).then((data) => {
-      setError(data?.error);
-      setSuccess(data?.success);
+      if (data?.error) {
+        setError(data.error);
+      } else {
+        setError("");
+        toast.success("Task Added Successfully");
+      }
       // Refresh the page
     });
     Addform.reset();
+    setIsOpen(false);
   };
+
   const TaskPriority = [
     { value: "LOW", label: "Low" },
     { value: "MEDIUM", label: "Medium" },
@@ -119,6 +125,7 @@ export function AddOrDelete({
                               <Input
                                 {...field}
                                 id="title"
+                                disabled={isLoading}
                                 type="text"
                                 placeholder="Enter Title.."
                                 className="placeholder:text-gray-500"
@@ -141,6 +148,7 @@ export function AddOrDelete({
                               <Textarea
                                 {...field}
                                 id="description"
+                                disabled={isLoading}
                                 placeholder="Enter Description.."
                                 className="placeholder:text-gray-500"
                               />
@@ -162,6 +170,7 @@ export function AddOrDelete({
                               <Input
                                 {...field}
                                 value={field.value || ""}
+                                disabled={isLoading}
                                 onChange={(e) => {
                                   const value = e.target.value.split(",");
                                   field.onChange(value);
@@ -186,6 +195,7 @@ export function AddOrDelete({
                             <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
+                              disabled={isLoading}
                             >
                               <FormControl>
                                 <SelectTrigger className="w-[150px]">
@@ -218,6 +228,7 @@ export function AddOrDelete({
                             <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
+                              disabled={isLoading}
                             >
                               <FormControl>
                                 <SelectTrigger className="w-[150px]">
@@ -245,6 +256,7 @@ export function AddOrDelete({
                   variant="secondary"
                   type="submit"
                   className="w-full my-5"
+                  disabled={isLoading}
                 >
                   Submit
                 </Button>
