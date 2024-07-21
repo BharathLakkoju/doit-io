@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { CommentType } from "@/types/Types";
+import { CommentType } from "@/types";
 
 export default async function CommentsAcc({
   data,

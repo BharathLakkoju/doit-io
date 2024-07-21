@@ -12,7 +12,6 @@ import {
 import { signout } from "@/actions/auth";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PersonIcon } from "@radix-ui/react-icons";
 
 interface NavbarProps {
   isLoggedIn?: boolean;
@@ -63,11 +62,6 @@ export default function Navbar({
                         <AvatarFallback>DP</AvatarFallback>
                       </Avatar>
                     ) : (
-                      // <PersonIcon
-                      //   width={24}
-                      //   height={24}
-                      //   className="text-white rounded-full"
-                      // />
                       <Avatar className="w-6 h-6">
                         <AvatarImage src="" alt="DP" />
                         <AvatarFallback className="text-sm bg-zinc-600">

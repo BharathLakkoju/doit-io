@@ -22,8 +22,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
-import FormError from "./FormError";
-import FormSuccess from "./FormSuccess";
+import FormError from "@/components/shared/auth/FormError";
+import FormSuccess from "@/components/shared/auth/FormSuccess";
 import { useRouter } from "next/navigation";
 
 export default function ResetForm() {
