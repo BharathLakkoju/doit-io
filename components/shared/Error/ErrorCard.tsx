@@ -23,9 +23,7 @@ const ErrorCard: ErrorComponent = ({ error, reset }) => {
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>{error.name}</AccordionTrigger>
-            <AccordionContent>
-              {error.message} - {error.cause}
-            </AccordionContent>
+            <AccordionContent>{error.message}</AccordionContent>
           </AccordionItem>
         </Accordion>
         <Link href="/login">

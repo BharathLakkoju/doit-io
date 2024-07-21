@@ -1,9 +1,9 @@
-import ErrorCard from "@/components/shared/Error/ErrorCard";
+import ErrorCardFC from "@/components/shared/Error/ErrorCardFC";
 
 export default function AuthErrorPage() {
   return (
     <>
-      <ErrorCard />
+      <ErrorCardFC />
     </>
   );
 }
