@@ -58,7 +58,11 @@
     "typescript": "^5.5.3"
   },
   "trustedDependencies": [
+    "@prisma/client",
+    "@prisma/engines",
     "aws-sdk",
-    "core-js"
+    "bcrypt",
+    "core-js",
+    "prisma"
   ]
 }

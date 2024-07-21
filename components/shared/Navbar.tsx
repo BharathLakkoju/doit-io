@@ -50,7 +50,7 @@ export default function Navbar({
               </Link>
               <Link
                 className="focus:outline-none rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
-                href="#"
+                href="/importants"
               >
                 MarkiT
               </Link>

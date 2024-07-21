@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { getUserByEmail, getUserById } from "@/data/user";
 import { TaskStatus } from "@prisma/client";
+import { TaskType } from "@/types";
 
 export const getTasks = async (email: string) => {
   try {
@@ -23,19 +24,21 @@ export const getTasksById = async (id: string) => {
       where: {
         userId: existingUser?.id,
       },
+      include: {
+        user: true,
+      },
     });
-    return tasks;
+    return tasks as TaskType[];
   } catch (error) {
     return null;
   }
 };
 
-export const getImpTasks = async (email: string) => {
+export const getImpTasks = async (id: string) => {
   try {
-    const existingUser = await getUserByEmail(email);
     const ImpTasks = await db.task.findMany({
       where: {
-        userId: existingUser?.id,
+        userId: id,
         isImportant: true,
       },
     });

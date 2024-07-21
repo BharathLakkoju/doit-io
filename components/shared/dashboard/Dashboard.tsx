@@ -1,134 +1,561 @@
 "use client";
-import React, { useMemo, useState } from "react";
-import { TaskType, TaskStatusEnum, TaskPriorityEnum } from "@/types";
-import TodoItems from "@/components/shared/dashboard/TodoItems";
-import { AddOrDelete } from "@/components/shared/dashboard/AddOrDelete";
-import { deleteTask } from "@/actions/tasks";
-import { useRouter } from "next/navigation";
-
-function useTaskManagement(initialTasks: TaskType[]) {
-  const [checkedList, setCheckedList] = useState<TaskType["id"][]>([]);
-
-  const handleCheckboxChange = (task: TaskType) => {
-    setCheckedList((prevList) =>
-      prevList.includes(task.id)
-        ? prevList.filter((id) => id !== task.id)
-        : [...prevList, task.id]
-    );
-  };
-
-  return { checkedList, handleCheckboxChange };
-}
-
-const statusOrder = {
-  [TaskStatusEnum.TOBE]: 1,
-  [TaskStatusEnum.IN_PROGRESS]: 2,
-  [TaskStatusEnum.COMPLETED]: 3,
-};
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { TaskPriorityEnum, TaskStatusEnum, TaskType } from "@/types";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronUp,
+  Circle,
+  CircleCheck,
+} from "lucide-react";
+import React, { useEffect } from "react";
+import DeleteTask from "./DeleteTask";
+import EditTask from "./EditTask";
+import { changeTodoStatus } from "@/actions/tasks";
 
 export default function Dashboard({
-  taskdata,
-  name,
-  id,
+  data,
+  userId,
 }: {
-  taskdata: TaskType[];
-  name: string;
-  id: string;
+  data: TaskType[];
+  userId: string;
 }) {
-  const router = useRouter();
-  const filterTasks = (tasks: TaskType[], status: string) => {
-    return tasks.filter((task) => task.status === status);
-  };
-  const sortTasks = (tasks: TaskType[], status: string) => {
-    return tasks.sort((a, b) => {
-      if (a.status === status) return -1;
-      if (b.status === status) return 1;
-      return (
-        statusOrder[a.status as keyof typeof statusOrder] -
-        statusOrder[b.status as keyof typeof statusOrder]
-      );
-    });
-  };
-  const filterAndSortTasks = (tasks: TaskType[], status: string | null) => {
-    if (!status) return tasks;
-    const filteredTasks = filterTasks(tasks, status);
-    return sortTasks(filteredTasks, status);
-  };
+  const [checkedList, setCheckedList] = React.useState<TaskType["id"][]>([]);
+  const [checkedTodoList, setCheckedTodoList] = React.useState<
+    TaskType["id"][]
+  >([]);
+  const [checkedProgressList, setCheckedProgressList] = React.useState<
+    TaskType["id"][]
+  >([]);
+  const [checkedCompletedList, setCheckedCompletedList] = React.useState<
+    TaskType["id"][]
+  >([]);
 
-  const todoTasks = useMemo(
-    () =>
-      filterAndSortTasks(
-        taskdata.filter((task) => task.status === TaskStatusEnum.TOBE),
-        TaskStatusEnum.TOBE
-      ),
-    [taskdata]
-  );
-  const progressTasks = useMemo(
-    () =>
-      filterAndSortTasks(
-        taskdata.filter((task) => task.status === TaskStatusEnum.IN_PROGRESS),
-        TaskStatusEnum.IN_PROGRESS
-      ),
-    [taskdata]
-  );
-  const doneTasks = useMemo(
-    () =>
-      filterAndSortTasks(
-        taskdata.filter((task) => task.status === TaskStatusEnum.COMPLETED),
-        TaskStatusEnum.COMPLETED
-      ),
-    [taskdata]
-  );
-
-  const [checked, setChecked] = useState(false);
-  const { checkedList, handleCheckboxChange } = useTaskManagement(taskdata);
-
-  const handleDelete = () => {
-    deleteTask(checkedList).then((res) => {
-      if (res?.error) {
-        alert(res.error);
-      } else {
-        router.refresh();
+  // Functions to change status of tasks
+  const handleChange = async (
+    taskIds: TaskType["id"][],
+    status: TaskStatusEnum
+  ) => {
+    // Implement the logic to change the status of tasks here
+    // You might want to call an API or update state here
+    await changeTodoStatus(taskIds, status).then((res) => {
+      if (res?.success) {
+        // Update the state with the new status
+        setCheckedList([]);
+        setCheckedTodoList([]);
+        setCheckedProgressList([]);
+        setCheckedCompletedList([]);
       }
     });
   };
 
+  // Function to sort the data based on the status
+  const sortDataByStatus = (tasks: TaskType[]) => {
+    return {
+      todos: tasks.filter((task) => task.status === TaskStatusEnum.TOBE),
+      ongoing: tasks.filter(
+        (task) => task.status === TaskStatusEnum.IN_PROGRESS
+      ),
+      completed: tasks.filter(
+        (task) => task.status === TaskStatusEnum.COMPLETED
+      ),
+    };
+  };
+
+  const { todos, ongoing, completed } = sortDataByStatus(data);
+
   return (
-    <>
-      <div className="my-16 md:my-24 mx-[5%] md:mx-[20%]">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-400">
-            Welcome back,{" "}
-            <span className="font-semibold text-gray-300">{name}</span>
-          </span>
-          <div>
-            <AddOrDelete id={id} handleDelete={handleDelete} />
+    <div className="grid grid-cols-3 gap-4 h-[700px] mt-5">
+      <div className="col-span-2 grid grid-rows-2 gap-4">
+        <div className="bg-blue-400/55 p-4 rounded-xl max-h-[400px] flex flex-col">
+          <div className="flex justify-between items-center px-2">
+            <span className="text-gray-100 ml-2 font-bold">TODO's</span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                onClick={() =>
+                  handleChange(checkedTodoList, TaskStatusEnum.IN_PROGRESS)
+                }
+              >
+                <ChevronDown className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                onClick={() =>
+                  handleChange(checkedTodoList, TaskStatusEnum.COMPLETED)
+                }
+              >
+                <ChevronsRight className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+              </Button>
+            </div>
+          </div>
+          <div className="overflow-hidden flex flex-col flex-grow mt-2">
+            <div className="relative">
+              <div className="text-xs text-gray-100 overflow-y-auto max-h-[300px]">
+                {todos.length !== 0 ? (
+                  todos.map((todo) => (
+                    <div
+                      key={todo.id}
+                      className="flex justify-between items-center border min-h-16 bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2 pr-2"
+                    >
+                      <div className="flex justify-start items-center gap-2">
+                        <div>
+                          {checkedList.includes(todo.id) ? (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedTodoList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedTodoList(
+                                    checkedTodoList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedTodoList([
+                                    ...checkedTodoList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <CircleCheck />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedTodoList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedTodoList(
+                                    checkedTodoList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedTodoList([
+                                    ...checkedTodoList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <Circle />
+                            </Button>
+                          )}
+                        </div>
+                        <div className=" flex gap-2 text-xs text-gray-100">
+                          <Badge
+                            variant="outline"
+                            className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
+                              todo.priority === TaskPriorityEnum.HIGH
+                                ? "bg-red-500/75"
+                                : todo.priority === TaskPriorityEnum.MEDIUM
+                                ? "bg-yellow-500/75"
+                                : "bg-green-500/75"
+                            }`}
+                          >
+                            {todo.priority}
+                          </Badge>
+                          {todo.isImportant ? (
+                            <Badge
+                              className="p-1 text-xs bg-destructive/75 border-none text-gray-100"
+                              variant="outline"
+                            >
+                              IMP
+                            </Badge>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 w-[300px]">
+                          <span className="font-bold text-sm">
+                            {todo.title}
+                          </span>
+                          <div className="text-xs text-gray-400">
+                            {todo.description}
+                          </div>
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                          {todo.tags.map((tag, index) => (
+                            <Badge
+                              variant="outline"
+                              key={index}
+                              className="p-1 text-xs bg-white border-none"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right flex justify-end items-center text-gray-800 gap-5">
+                        <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
+                          <span>Last Updated</span>
+                          <span>
+                            {todo.updatedAt.toLocaleDateString() +
+                              " " +
+                              todo.updatedAt.toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <EditTask userId={userId} task={todo} />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-xl text-gray-100 text-center items-center justify-center flex h-[200px] w-full italic">
+                    <span>No Todo's found</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="flex items-start justify-center gap-10 mt-10">
-          <TodoItems
-            taskdata={todoTasks}
-            heading="To Do"
-            type="TOBE"
-            checkedList={checkedList}
-            handleCheckboxChange={handleCheckboxChange}
-          />
-          <TodoItems
-            taskdata={progressTasks}
-            heading="In Progress"
-            type="IN_PROGRESS"
-            checkedList={checkedList}
-            handleCheckboxChange={handleCheckboxChange}
-          />
-          <TodoItems
-            taskdata={doneTasks}
-            heading="Completed"
-            type="COMPLETED"
-            checkedList={checkedList}
-            handleCheckboxChange={handleCheckboxChange}
-          />
+        <div className="bg-red-400/55 p-4 rounded-xl max-h-[400px] flex flex-col">
+          <div className="flex justify-between items-center gap-2 px-2">
+            <span className="text-gray-100 ml-2 font-bold">OnGoing</span>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                onClick={() =>
+                  handleChange(checkedProgressList, TaskStatusEnum.TOBE)
+                }
+              >
+                <ChevronUp className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                onClick={() =>
+                  handleChange(checkedProgressList, TaskStatusEnum.COMPLETED)
+                }
+              >
+                <ChevronsRight className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+              </Button>
+            </div>
+          </div>
+          <div className="overflow-hidden flex flex-col flex-grow mt-2">
+            <div className="relative">
+              <div className="text-xs text-gray-100 overflow-y-auto max-h-[300px]">
+                {ongoing.length !== 0 ? (
+                  ongoing.map((todo) => (
+                    <div
+                      key={todo.id}
+                      className="flex justify-between items-center border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
+                    >
+                      <div className="flex justify-start items-center gap-2">
+                        <div>
+                          {checkedList.includes(todo.id) ? (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedProgressList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedProgressList(
+                                    checkedProgressList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedProgressList([
+                                    ...checkedProgressList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <CircleCheck />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedProgressList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedProgressList(
+                                    checkedProgressList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedProgressList([
+                                    ...checkedProgressList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <Circle />
+                            </Button>
+                          )}
+                        </div>
+                        <div className=" flex gap-2 text-xs text-gray-100">
+                          <Badge
+                            variant="outline"
+                            className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
+                              todo.priority === TaskPriorityEnum.HIGH
+                                ? "bg-red-500/75"
+                                : todo.priority === TaskPriorityEnum.MEDIUM
+                                ? "bg-yellow-500/75"
+                                : "bg-green-500/75"
+                            }`}
+                          >
+                            {todo.priority}
+                          </Badge>
+                          {todo.isImportant ? (
+                            <Badge
+                              className="p-1 text-xs bg-destructive/75 border-none text-gray-100"
+                              variant="outline"
+                            >
+                              IMP
+                            </Badge>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 w-[300px]">
+                          <span className="font-bold text-sm">
+                            {todo.title}
+                          </span>
+                          <div className="text-xs text-gray-400">
+                            {todo.description}
+                          </div>
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                          {todo.tags.map((tag, index) => (
+                            <Badge
+                              variant="outline"
+                              key={index}
+                              className="p-1 text-xs bg-white border-none"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right flex justify-end items-center text-gray-800 gap-5">
+                        <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
+                          <span>Last Updated</span>
+                          <span>
+                            {todo.updatedAt.toLocaleDateString() +
+                              " " +
+                              todo.updatedAt.toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <EditTask userId={userId} task={todo} />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-xl text-gray-100 text-center items-center justify-center flex h-[200px] w-full italic">
+                    <span>No On Going Task's found</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+      <div className="bg-emerald-400/55 p-4 rounded-xl">
+        <div className="flex justify-between items-center px-2">
+          <span className="text-gray-100 ml-2 font-bold">Completed</span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+              onClick={() =>
+                handleChange(checkedCompletedList, TaskStatusEnum.IN_PROGRESS)
+              }
+            >
+              <ChevronLeft className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+              onClick={() =>
+                handleChange(checkedCompletedList, TaskStatusEnum.TOBE)
+              }
+            >
+              <ChevronsLeft className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+            </Button>
+          </div>
+        </div>
+        <div className="overflow-hidden flex flex-col flex-grow mt-2">
+          <div className="relative">
+            <div className="text-xs text-gray-100 overflow-y-auto max-h-[700px]">
+              {completed.length !== 0 ? (
+                completed.map((todo) => (
+                  <div
+                    key={todo.id}
+                    className="flex justify-between items-center h-24 border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
+                  >
+                    <div className="flex justify-start items-center gap-5">
+                      <div className="text-xs text-gray-100 flex flex-wrap gap-3">
+                        <div className="flex flex-wrap gap-2">
+                          {checkedList.includes(todo.id) ? (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedCompletedList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedCompletedList(
+                                    checkedCompletedList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedCompletedList([
+                                    ...checkedCompletedList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <CircleCheck />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              className="text-dark text-xs p-0 h-fit w-fit bg-transparent hover:bg-transparent hover:text-gray-400 border-none"
+                              onClick={() => {
+                                if (
+                                  checkedList.includes(todo.id) ||
+                                  checkedCompletedList.includes(todo.id)
+                                ) {
+                                  setCheckedList(
+                                    checkedList.filter((id) => id !== todo.id)
+                                  );
+                                  setCheckedCompletedList(
+                                    checkedCompletedList.filter(
+                                      (id) => id !== todo.id
+                                    )
+                                  );
+                                } else {
+                                  setCheckedList([...checkedList, todo.id]);
+                                  setCheckedCompletedList([
+                                    ...checkedCompletedList,
+                                    todo.id,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <Circle />
+                            </Button>
+                          )}
+                        </div>
+                        <div className=" flex gap-2 text-xs text-gray-100">
+                          <Badge
+                            variant="outline"
+                            className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
+                              todo.priority === TaskPriorityEnum.HIGH
+                                ? "bg-red-500/75"
+                                : todo.priority === TaskPriorityEnum.MEDIUM
+                                ? "bg-yellow-500/75"
+                                : "bg-green-500/75"
+                            }`}
+                          >
+                            {todo.priority}
+                          </Badge>
+                          {todo.isImportant ? (
+                            <Badge
+                              className="p-1 text-xs bg-destructive/75 border-none text-gray-100"
+                              variant="outline"
+                            >
+                              IMP
+                            </Badge>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 flex-wrap">
+                        <div className="text-sm overflow-hidden text-ellipsis w-[200px]">
+                          {todo.title}
+                          <div className="text-xs text-gray-300">
+                            {todo.description}
+                          </div>
+                        </div>
+                        {todo.tags.map((tag, index) => (
+                          <Badge
+                            variant="outline"
+                            key={index}
+                            className="p-1 text-xs bg-white border-none"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right flex flex-wrap justify-end items-center text-gray-800 gap-2">
+                      <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
+                        <span>Last Updated</span>
+                        <span>
+                          {todo.updatedAt.toLocaleDateString() +
+                            " " +
+                            todo.updatedAt.toLocaleTimeString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-xl text-gray-100 text-center items-center justify-center flex h-96 w-full italic">
+                  <span>No Completed Task's found</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="fixed bottom-0 p-5 mx-auto ml-16 justify-center items-center left-1/2 -translate-x-1/2">
+        <DeleteTask checkedList={checkedList} />
+      </div>
+    </div>
   );
 }

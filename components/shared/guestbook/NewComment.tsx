@@ -18,13 +18,10 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { use, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import z from "zod";
 import { commentSchema } from "@/schemas";
 import { comment } from "@/actions/comment";
-import FormError from "../auth/FormError";
-import FormSuccess from "../auth/FormSuccess";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
 interface NewCommentProps {
@@ -41,8 +38,6 @@ export function NewComment({
   desc,
 }: NewCommentProps) {
   const [pending, startTransition] = useTransition();
-  const [formError, setFormError] = useState<string | undefined>();
-  const [formSuccess, setFormSuccess] = useState<string | undefined>();
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const form = useForm<z.infer<typeof commentSchema>>({

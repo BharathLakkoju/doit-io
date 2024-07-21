@@ -23,7 +23,7 @@ export enum TaskPriorityEnum {
 export interface TaskType {
   id: string;
   title: string;
-  description?: string;
+  description: string;
   tags: string[];
   status: TaskStatusEnum | TaskStatusEnum.TOBE;
   priority: TaskPriorityEnum | TaskPriorityEnum.LOW;
@@ -31,8 +31,5 @@ export interface TaskType {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  user?: User;
-  parentTaskId?: string;
-  parentTask?: TaskType;
-  subTasks?: TaskType[];
+  user: User;
 }

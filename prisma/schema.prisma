@@ -61,7 +61,7 @@ model Account {
 model Task {
   id          String       @id @default(cuid())
   title       String
-  description String?
+  description String
   status      TaskStatus   @default(TOBE)
   tags        String[]
   priority    TaskPriority @default(LOW)
