@@ -213,7 +213,11 @@ export default function Dashboard({
                         <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
                           <span>Last Updated</span>
                           <span>
-                            {todo.updatedAt.toLocaleDateString() +
+                            {todo.updatedAt.getDate() +
+                              "/" +
+                              todo.updatedAt.getMonth() +
+                              "/" +
+                              todo.updatedAt.getFullYear() +
                               " " +
                               todo.updatedAt.toLocaleTimeString()}
                           </span>
@@ -374,7 +378,11 @@ export default function Dashboard({
                         <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
                           <span>Last Updated</span>
                           <span>
-                            {todo.updatedAt.toLocaleDateString() +
+                            {todo.updatedAt.getDate() +
+                              "/" +
+                              todo.updatedAt.getMonth() +
+                              "/" +
+                              todo.updatedAt.getFullYear() +
                               " " +
                               todo.updatedAt.toLocaleTimeString()}
                           </span>
@@ -426,7 +434,7 @@ export default function Dashboard({
                 completed.map((todo) => (
                   <div
                     key={todo.id}
-                    className="flex justify-between items-center h-24 border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
+                    className="flex justify-between items-center border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
                   >
                     <div className="flex justify-start items-center gap-5">
                       <div className="text-xs text-gray-100 flex flex-wrap gap-3">
@@ -536,7 +544,11 @@ export default function Dashboard({
                       <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
                         <span>Last Updated</span>
                         <span>
-                          {todo.updatedAt.toLocaleDateString() +
+                          {todo.updatedAt.getDate() +
+                            "/" +
+                            todo.updatedAt.getMonth() +
+                            "/" +
+                            todo.updatedAt.getFullYear() +
                             " " +
                             todo.updatedAt.toLocaleTimeString()}
                         </span>
