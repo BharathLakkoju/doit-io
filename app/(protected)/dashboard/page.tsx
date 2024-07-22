@@ -1,17 +1,14 @@
-import { auth } from "@/auth";
 import AddTask from "@/components/shared/dashboard/AddTask";
 import Dashboard from "@/components/shared/dashboard/Dashboard";
-import DeleteTask from "@/components/shared/dashboard/DeleteTask";
-import { Separator } from "@/components/ui/separator";
-import { getTasks } from "@/data/task";
-// import { taskSchema } from "@/schemas";
-import { TaskType, TaskStatusEnum, TaskPriorityEnum } from "@/types";
+import { getTasksById } from "@/data/task";
+import { TaskType } from "@/types";
+import { auth } from "@/auth";
 
 export default async function DashboardPage() {
   const session = await auth();
   const userId = session?.user?.id as string;
   const userName = session?.user?.name as string;
-  const data = (await getTasks(userId)) as TaskType[];
+  const data = (await getTasksById(userId)) as TaskType[];
 
   return (
     <>

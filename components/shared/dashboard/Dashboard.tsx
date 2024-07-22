@@ -10,6 +10,10 @@ import {
   ChevronUp,
   Circle,
   CircleCheck,
+  Layout,
+  LayoutList,
+  ListChecks,
+  ListTodo,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import DeleteTask from "./DeleteTask";
@@ -72,7 +76,7 @@ export default function Dashboard({
       <div className="grid md:col-span-2 md:grid md:grid-rows-2 gap-4">
         <div className="bg-blue-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
           <div className="flex justify-between items-center px-2">
-            <span className="text-gray-100 ml-2 font-bold">TODO's</span>
+            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <LayoutList className="w-5 h-5 font-bold"/> TODO's</span>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -82,7 +86,7 @@ export default function Dashboard({
                   handleChange(checkedTodoList, TaskStatusEnum.IN_PROGRESS)
                 }
               >
-                <ChevronDown className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+                <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
               </Button>
               <Button
                 variant="outline"
@@ -92,7 +96,7 @@ export default function Dashboard({
                   handleChange(checkedTodoList, TaskStatusEnum.COMPLETED)
                 }
               >
-                <ChevronsRight className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
               </Button>
             </div>
           </div>
@@ -239,7 +243,7 @@ export default function Dashboard({
         </div>
         <div className="bg-red-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
           <div className="flex justify-between items-center px-2">
-            <span className="text-gray-100 ml-2 font-bold">On Going</span>
+            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <ListTodo className="w-6 h-6 font-bold"/> On Going</span>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -249,7 +253,7 @@ export default function Dashboard({
                   handleChange(checkedProgressList, TaskStatusEnum.TOBE)
                 }
               >
-                <ChevronUp className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+                <LayoutList className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
               </Button>
               <Button
                 variant="outline"
@@ -259,7 +263,7 @@ export default function Dashboard({
                   handleChange(checkedProgressList, TaskStatusEnum.COMPLETED)
                 }
               >
-                <ChevronsRight className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
               </Button>
             </div>
           </div>
@@ -407,7 +411,7 @@ export default function Dashboard({
       </div>
       <div className="bg-emerald-400/55 p-2 lg:p-4 rounded-xl">
         <div className="flex justify-between items-center px-2">
-          <span className="text-gray-100 ml-2 font-bold">Completed</span>
+          <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <ListChecks className="w-5 h-5 font-bold"/> Completed</span>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -417,7 +421,7 @@ export default function Dashboard({
                 handleChange(checkedCompletedList, TaskStatusEnum.IN_PROGRESS)
               }
             >
-              <ChevronLeft className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+              <LayoutList className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
             </Button>
             <Button
               variant="outline"
@@ -427,7 +431,7 @@ export default function Dashboard({
                 handleChange(checkedCompletedList, TaskStatusEnum.TOBE)
               }
             >
-              <ChevronsLeft className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+              <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6" />
             </Button>
           </div>
         </div>
