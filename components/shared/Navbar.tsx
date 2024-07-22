@@ -41,18 +41,6 @@ export default function Navbar({
         <div className="md:max-w-96 md-w-auto flex justify-between items-center gap-5 font-bold">
           {isLoggedIn && userName ? (
             <div className="md:max-w-96 md-w-auto flex justify-between items-center gap-5 font-bold">
-              <Link
-                className="focus:outline-none rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
-                href="/dashboard"
-              >
-                DoesiT
-              </Link>
-              <Link
-                className="focus:outline-none rounded-md px-3 hover:underline hover:underline-offset-8 hover:text-blue-300"
-                href="/importants"
-              >
-                MarkiT
-              </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger className="px-3 rounded-md hover:text-blue-300 hover:underline hover:underline-offset-8 focus:outline-none">
                   <div className="flex justify-center items-center gap-2">
@@ -79,6 +67,17 @@ export default function Navbar({
                   align="end"
                 >
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
+                    <Link className="w-full" href="/dashboard">
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
+                    <Link className="w-full" href="/importants">
+                      Importants
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="hover:bg-gray-600 cursor-pointer hover:text-gray-300">
                     <Link className="w-full" href="/settings">

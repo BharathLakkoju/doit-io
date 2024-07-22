@@ -41,7 +41,7 @@ export default function Important({
       <div className="fixed bottom-0 p-5 mx-auto ml-16 justify-center items-center left-1/2 -translate-x-1/2">
         <DeleteTaskImp checkedList={checkedList} />
       </div>
-      <div className="flex flex-col gap-4 min-w-[700px] min-h-[700px] bg-gray-700 mt-5 rounded-lg p-5">
+      <div className="flex flex-col gap-4 md:min-w-[700px] h-[700px] md:min-h-[700px] bg-gray-700 mt-5 rounded-lg p-5">
         <div className="flex justify-between items-center px-2">
           <span className="text-gray-100 ml-2 font-bold">Important Tasks</span>
           <div className="flex items-center gap-2">
@@ -77,16 +77,16 @@ export default function Important({
         </div>
         <div className="overflow-hidden flex flex-col flex-grow mt-2">
           <div className="relative">
-            <div className="text-xs grid grid-cols-3 text-gray-100 overflow-y-auto max-h-[700px] gap-2 justify-start">
+            <div className="text-xs grid grid-cols-1 lg:grid-cols-3 text-gray-100 overflow-y-auto max-h-[600px] gap-2 justify-start">
               {data.length !== 0 ? (
                 data.map((todo) => (
                   <div
                     key={todo.id}
-                    className="flex justify-between items-center border min-h-20 bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
+                    className="flex flex-col md:flex-row justify-between items-center border min-h-20 bg-zinc-800 border-gray-300 rounded-xl py-2 md:p-2 mb-2"
                   >
-                    <div className="flex justify-start items-center gap-5">
-                      <div className="text-xs text-gray-100 flex flex-wrap gap-3">
-                        <div className="flex flex-wrap gap-2 w-24">
+                    <div className="flex flex-col justify-start w-[300px] items-start md:items-center gap-3 lg:gap-5 md:w-full">
+                      <div className="text-xs text-gray-100 flex justify-start md:justify-between gap-3 w-[300px] md:w-full">
+                        <div className="flex justify-between md:justify-start gap-2 w-full md:w-full md:px-2">  
                           {checkedList.includes(todo.id) ? (
                             <Button
                               variant="outline"
@@ -120,7 +120,8 @@ export default function Important({
                               <Circle />
                             </Button>
                           )}
-                          <Badge
+                          <div className="flex gap-2">
+                            <Badge
                             className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
                               todo.priority === TaskPriorityEnum.HIGH
                                 ? "bg-red-500/75"
@@ -153,15 +154,19 @@ export default function Important({
                               TODO
                             </Badge>
                           )}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex gap-2 flex-wrap items-center">
-                        <div className="text-sm overflow-hidden text-ellipsis w-[200px]">
+                      <div className="flex gap-2 w-[300px] md:w-full md:px-2 flex-col md:flex-row md:flex-wrap md:items-center">
+                        <div className="text-sm overflow-hidden text-ellipsis">
                           {todo.title}
                           <div className="text-xs text-gray-300">
                             {todo.description}
                           </div>
                         </div>
+                      </div>
+                      <div className="text-right flex md:flex-wrap justify-between md:items-center text-gray-800 gap-2 w-[300px] md:w-full md:px-2">
+                        <div className="flex gap-2 flex-wrap">
                         {todo.tags.map((tag, index) => (
                           <Badge
                             variant="outline"
@@ -171,23 +176,22 @@ export default function Important({
                             {tag}
                           </Badge>
                         ))}
+                        </div>
+                        <div className="text-gray-100 flex md:flex-col gap-2 justify-end items-center">
+                          <span className="hidden lg:block">Last Updated</span>
+                          <span>
+                            {todo.updatedAt.toLocaleDateString() +
+                              " " +
+                              todo.updatedAt.toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <EditTaskImp task={todo} userId={userId} />
                       </div>
-                    </div>
-                    <div className="text-right flex flex-wrap justify-end items-center text-gray-800 gap-2">
-                      <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
-                        <span>Last Updated</span>
-                        <span>
-                          {todo.updatedAt.toLocaleDateString() +
-                            " " +
-                            todo.updatedAt.toLocaleTimeString()}
-                        </span>
-                      </div>
-                      <EditTaskImp task={todo} userId={userId} />
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="text-xl text-gray-100 text-center items-center justify-center flex h-[500px] w-[900px] italic">
+                <div className="text-xl text-gray-100 text-center items-center justify-center flex h-[500px] md:w-[900px] italic">
                   <span>No Important Task's found</span>
                 </div>
               )}

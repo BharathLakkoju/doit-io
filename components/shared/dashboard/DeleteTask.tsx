@@ -15,7 +15,7 @@ export default function DeleteTask({ checkedList }: { checkedList: string[] }) {
           description: "Your task has been deleted successfully",
           variant: "default",
           duration: 1000,
-          className: "bg-emerald-500/75 text-white",
+          className: "z-10 bg-emerald-500 text-white",
         });
       } else {
         toast({
@@ -23,7 +23,7 @@ export default function DeleteTask({ checkedList }: { checkedList: string[] }) {
           description: "Your task could not be deleted",
           variant: "destructive",
           duration: 1000,
-          className: "bg-red-500/75 text-white",
+          className: "z-10 bg-red-500 text-white",
         });
       }
     });
@@ -32,7 +32,7 @@ export default function DeleteTask({ checkedList }: { checkedList: string[] }) {
 
   return (
     <>
-      <Button variant="destructive" onClick={handleDeleteTask}>
+      <Button variant="destructive" className="shadow-lg shadow-gray-900 drop-shadow-xl" onClick={handleDeleteTask}>
         Delete Task
       </Button>
     </>

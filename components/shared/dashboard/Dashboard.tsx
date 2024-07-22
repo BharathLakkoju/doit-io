@@ -68,9 +68,9 @@ export default function Dashboard({
   const { todos, ongoing, completed } = sortDataByStatus(data);
 
   return (
-    <div className="grid grid-cols-3 gap-4 h-[700px] mt-5">
-      <div className="col-span-2 grid grid-rows-2 gap-4">
-        <div className="bg-blue-400/55 p-4 rounded-xl max-h-[400px] flex flex-col">
+    <div className="grid md:grid md:grid-cols-3 gap-4 h-[900px] md:h-[700px] mt-5">
+      <div className="grid md:col-span-2 md:grid md:grid-rows-2 gap-4">
+        <div className="bg-blue-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
           <div className="flex justify-between items-center px-2">
             <span className="text-gray-100 ml-2 font-bold">TODO's</span>
             <div className="flex items-center gap-2">
@@ -98,12 +98,12 @@ export default function Dashboard({
           </div>
           <div className="overflow-hidden flex flex-col flex-grow mt-2">
             <div className="relative">
-              <div className="text-xs text-gray-100 overflow-y-auto max-h-[300px]">
+              <div className="text-xs text-gray-100 overflow-y-auto min-h-[200px] max-h-[300px]">
                 {todos.length !== 0 ? (
                   todos.map((todo) => (
                     <div
                       key={todo.id}
-                      className="flex justify-between items-center border min-h-16 bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2 pr-2"
+                      className="flex flex-col flex-wrap md:flex-nowrap md:flex-row justify-between items-stretch lg:items-center border gap-3 lg:min-h-16 bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2 pr-2"
                     >
                       <div className="flex justify-start items-center gap-2">
                         <div>
@@ -189,7 +189,7 @@ export default function Dashboard({
                             ""
                           )}
                         </div>
-                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 w-[300px]">
+                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 lg:w-[300px]">
                           <span className="font-bold text-sm">
                             {todo.title}
                           </span>
@@ -197,32 +197,34 @@ export default function Dashboard({
                             {todo.description}
                           </div>
                         </div>
-                        <div className="flex gap-2 flex-wrap">
-                          {todo.tags.map((tag, index) => (
-                            <Badge
-                              variant="outline"
-                              key={index}
-                              className="p-1 text-xs bg-white border-none"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
                       </div>
-                      <div className="text-right flex justify-end items-center text-gray-800 gap-5">
-                        <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
-                          <span>Last Updated</span>
-                          <span>
-                            {todo.updatedAt.getDate() +
-                              "/" +
-                              todo.updatedAt.getMonth() +
-                              "/" +
-                              todo.updatedAt.getFullYear() +
-                              " " +
-                              todo.updatedAt.toLocaleTimeString()}
-                          </span>
+                      <div className="flex gap-2 justify-between items-center flex-wrap">
+                        <div className="flex flex-wrap gap-2">
+                        {todo.tags.map((tag, index) => (
+                          <Badge
+                            variant="outline"
+                            key={index}
+                            className="p-1 text-xs bg-white border-none"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
                         </div>
-                        <EditTask userId={userId} task={todo} />
+                        <div className="text-right flex justify-end items-center text-gray-800 gap-5">
+                          <div className="text-gray-100 flex lg:flex-col gap-2 justify-end items-end">
+                            <span className="hidden lg:block">Last Updated</span>
+                            <span>
+                              {todo.updatedAt.getDate() +
+                                "/" +
+                                todo.updatedAt.getMonth() +
+                                "/" +
+                                todo.updatedAt.getFullYear() +
+                                " " +
+                                todo.updatedAt.toLocaleTimeString()}
+                            </span>
+                          </div>
+                          <EditTask userId={userId} task={todo} />
+                        </div>
                       </div>
                     </div>
                   ))
@@ -235,10 +237,10 @@ export default function Dashboard({
             </div>
           </div>
         </div>
-        <div className="bg-red-400/55 p-4 rounded-xl max-h-[400px] flex flex-col">
-          <div className="flex justify-between items-center gap-2 px-2">
-            <span className="text-gray-100 ml-2 font-bold">OnGoing</span>
-            <div className="flex gap-2">
+        <div className="bg-red-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
+          <div className="flex justify-between items-center px-2">
+            <span className="text-gray-100 ml-2 font-bold">On Going</span>
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -247,7 +249,7 @@ export default function Dashboard({
                   handleChange(checkedProgressList, TaskStatusEnum.TOBE)
                 }
               >
-                <ChevronUp className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                <ChevronUp className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
               </Button>
               <Button
                 variant="outline"
@@ -263,12 +265,12 @@ export default function Dashboard({
           </div>
           <div className="overflow-hidden flex flex-col flex-grow mt-2">
             <div className="relative">
-              <div className="text-xs text-gray-100 overflow-y-auto max-h-[300px]">
+              <div className="text-xs text-gray-100 overflow-y-auto min-h-[200px] max-h-[300px]">
                 {ongoing.length !== 0 ? (
                   ongoing.map((todo) => (
                     <div
                       key={todo.id}
-                      className="flex justify-between items-center border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
+                      className="flex flex-col flex-wrap md:flex-nowrap md:flex-row justify-between items-stretch lg:items-center border gap-3 lg:min-h-16 bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2 pr-2"
                     >
                       <div className="flex justify-start items-center gap-2">
                         <div>
@@ -354,7 +356,7 @@ export default function Dashboard({
                             ""
                           )}
                         </div>
-                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 w-[300px]">
+                        <div className="overflow-hidden text-ellipsis flex flex-col gap-1 min-w-[150px] lg:w-[300px]">
                           <span className="font-bold text-sm">
                             {todo.title}
                           </span>
@@ -362,38 +364,40 @@ export default function Dashboard({
                             {todo.description}
                           </div>
                         </div>
-                        <div className="flex gap-2 flex-wrap">
-                          {todo.tags.map((tag, index) => (
-                            <Badge
-                              variant="outline"
-                              key={index}
-                              className="p-1 text-xs bg-white border-none"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
                       </div>
-                      <div className="text-right flex justify-end items-center text-gray-800 gap-5">
-                        <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
-                          <span>Last Updated</span>
-                          <span>
-                            {todo.updatedAt.getDate() +
-                              "/" +
-                              todo.updatedAt.getMonth() +
-                              "/" +
-                              todo.updatedAt.getFullYear() +
-                              " " +
-                              todo.updatedAt.toLocaleTimeString()}
-                          </span>
+                      <div className="flex gap-2 justify-between items-center flex-wrap">
+                        <div className="flex flex-wrap gap-2">
+                        {todo.tags.map((tag, index) => (
+                          <Badge
+                            variant="outline"
+                            key={index}
+                            className="p-1 text-xs bg-white border-none"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
                         </div>
-                        <EditTask userId={userId} task={todo} />
+                        <div className="text-right flex justify-end items-center text-gray-800 gap-5">
+                          <div className="text-gray-100 flex lg:flex-col gap-2 justify-end items-end">
+                            <span className="hidden lg:block">Last Updated</span>
+                            <span>
+                              {todo.updatedAt.getDate() +
+                                "/" +
+                                todo.updatedAt.getMonth() +
+                                "/" +
+                                todo.updatedAt.getFullYear() +
+                                " " +
+                                todo.updatedAt.toLocaleTimeString()}
+                            </span>
+                          </div>
+                          <EditTask userId={userId} task={todo} />
+                        </div>
                       </div>
                     </div>
                   ))
                 ) : (
                   <div className="text-xl text-gray-100 text-center items-center justify-center flex h-[200px] w-full italic">
-                    <span>No On Going Task's found</span>
+                    <span>No On Going Task(s) found</span>
                   </div>
                 )}
               </div>
@@ -401,7 +405,7 @@ export default function Dashboard({
           </div>
         </div>
       </div>
-      <div className="bg-emerald-400/55 p-4 rounded-xl">
+      <div className="bg-emerald-400/55 p-2 lg:p-4 rounded-xl">
         <div className="flex justify-between items-center px-2">
           <span className="text-gray-100 ml-2 font-bold">Completed</span>
           <div className="flex items-center gap-2">
@@ -436,7 +440,7 @@ export default function Dashboard({
                     key={todo.id}
                     className="flex justify-between items-center border bg-zinc-800 border-gray-300 rounded-xl p-2 mb-2"
                   >
-                    <div className="flex justify-start items-center gap-5">
+                    <div className="flex justify-start items-center gap-3 min-w-[70px]">
                       <div className="text-xs text-gray-100 flex flex-wrap gap-3">
                         <div className="flex flex-wrap gap-2">
                           {checkedList.includes(todo.id) ? (
@@ -541,8 +545,8 @@ export default function Dashboard({
                       </div>
                     </div>
                     <div className="text-right flex flex-wrap justify-end items-center text-gray-800 gap-2">
-                      <div className="text-gray-100 flex flex-col gap-2 justify-end items-end">
-                        <span>Last Updated</span>
+                      <div className="text-gray-100 flex flex-col gap-2 justify-end items-end min-w-16">
+                        <span className="hidden lg:block">Last Updated</span>
                         <span>
                           {todo.updatedAt.getDate() +
                             "/" +
@@ -565,7 +569,7 @@ export default function Dashboard({
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 p-5 mx-auto ml-16 justify-center items-center left-1/2 -translate-x-1/2">
+      <div className="fixed bottom-0 p-5 mx-auto ml-16 justify-center items-center left-1/2 -translate-x-1/2 z-10">
         <DeleteTask checkedList={checkedList} />
       </div>
     </div>

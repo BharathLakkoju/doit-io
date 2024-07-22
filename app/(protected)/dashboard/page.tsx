@@ -22,7 +22,7 @@ export default async function DashboardPage() {
             <span className="text-blue-400 font-medium">{userName}</span>
           </span>
         </div>
-        <div className="fixed bottom-0 p-5 mx-auto -ml-16 justify-center items-center left-1/2 -translate-x-1/2">
+        <div className="fixed bottom-0 p-5 mx-auto -ml-16 justify-center items-center left-1/2 -translate-x-1/2 z-10">
           <AddTask id={userId} />
         </div>
         <div>

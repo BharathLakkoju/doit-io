@@ -101,13 +101,15 @@ export default function EditTaskImp({
           title: "Error",
           description: "Failed to update task. Please try again.",
           variant: "destructive",
+          className: "z-10 bg-red-500 text-white",
+          duration: 1000,
         });
       } else {
         toast({
           title: "Success",
           description: "Task updated successfully!",
           variant: "default",
-          className: "bg-green-500 text-white",
+          className: "z-10 bg-green-500 text-white",
           duration: 1000,
         });
         form.reset();
@@ -118,6 +120,8 @@ export default function EditTaskImp({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
+        className: "z-10 bg-red-500 text-white",
+        duration: 1000,
       });
     } finally {
       setLoading(false);
@@ -132,7 +136,7 @@ export default function EditTaskImp({
             <Edit className="text-gray-100 hover:text-gray-400 w-5 h-5" />
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-zinc-900 text-gray-200">
+        <DialogContent className="max-w-[350px] sm:max-w-[425px] bg-zinc-900 text-gray-200">
           <DialogHeader>
             <DialogTitle>Edit Task</DialogTitle>
             <DialogDescription className="text-gray-400">

@@ -94,7 +94,7 @@ export default function AddTaskImp({ id }: { id: string }) {
           title: "Error",
           description: "Failed to create task. Please try again.",
           variant: "destructive",
-          className: "z-10 bg-red-500/80 text-red-100 rounded-md",
+          className: "z-10 bg-red-500 text-red-100 rounded-md",
         });
       } else {
         console.log(res.success);
@@ -102,7 +102,7 @@ export default function AddTaskImp({ id }: { id: string }) {
           title: "Success",
           description: "Task created successfully!",
           variant: "default",
-          className: "z-10 bg-emerald-500/80 text-emerald-100 rounded-md",
+          className: "z-10 bg-emerald-500 text-emerald-100 rounded-md",
         });
         form.reset();
         setOpen(false);
@@ -113,7 +113,7 @@ export default function AddTaskImp({ id }: { id: string }) {
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
-        className: "z-10 bg-red-500/80 text-red-100 rounded-md",
+        className: "z-10 bg-red-500 text-red-100 rounded-md",
       });
     } finally {
       setLoading(false);
@@ -124,11 +124,11 @@ export default function AddTaskImp({ id }: { id: string }) {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
-          <div className="px-4 py-2 text-sm rounded-lg bg-gray-100 text-zinc-800 hover:text-gray-700 hover:bg-gray-300">
+          <div className="px-4 py-2 text-sm rounded-lg bg-gray-100 text-zinc-800 hover:text-gray-700 hover:bg-gray-300 shadow-lg shadow-gray-800/75 drop-shadow-xl">
             Add Task
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-zinc-900 text-gray-200">
+        <DialogContent className="max-w-[350px] sm:max-w-[425px] bg-zinc-900 text-gray-200">
           <DialogHeader>
             <DialogTitle>Add New Task</DialogTitle>
             <DialogDescription className="text-gray-400">
