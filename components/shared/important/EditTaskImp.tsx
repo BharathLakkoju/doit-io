@@ -202,9 +202,7 @@ export default function EditTaskImp({
                         required
                         onBlur={(e) => {
                           const tags = e.target.value
-                            .split(/[,;\s]+/)
-                            .filter((tag) => tag.trim() !== "")
-                            .map((tag) => tag.trim());
+                            .split(/[,;]+/)
                           field.onChange(tags);
                         }}
                       />
