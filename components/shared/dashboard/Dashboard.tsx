@@ -3,22 +3,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TaskPriorityEnum, TaskStatusEnum, TaskType } from "@/types";
 import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronsLeft,
-  ChevronsRight,
-  ChevronUp,
   Circle,
   CircleCheck,
-  Layout,
   LayoutList,
   ListChecks,
   ListTodo,
 } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import DeleteTask from "./DeleteTask";
 import EditTask from "./EditTask";
 import { changeTodoStatus } from "@/actions/tasks";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Dashboard({
   data,
@@ -76,28 +76,52 @@ export default function Dashboard({
       <div className="grid md:col-span-2 md:grid md:grid-rows-2 gap-4">
         <div className="bg-blue-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
           <div className="flex justify-between items-center px-2">
-            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <LayoutList className="w-5 h-5 font-bold"/> TODO's</span>
+            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center">
+              {" "}
+              <LayoutList className="w-5 h-5 font-bold" /> TODO's
+            </span>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-                onClick={() =>
-                  handleChange(checkedTodoList, TaskStatusEnum.IN_PROGRESS)
-                }
-              >
-                <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-                onClick={() =>
-                  handleChange(checkedTodoList, TaskStatusEnum.COMPLETED)
-                }
-              >
-                <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                      onClick={() =>
+                        handleChange(
+                          checkedTodoList,
+                          TaskStatusEnum.IN_PROGRESS
+                        )
+                      }
+                    >
+                      <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-100 text-gray-900">
+                    <span>Mark as InProgress</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                      onClick={() =>
+                        handleChange(checkedTodoList, TaskStatusEnum.COMPLETED)
+                      }
+                    >
+                      <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-100 text-gray-900">
+                    <span>Mark as Completed</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           <div className="overflow-hidden flex flex-col flex-grow mt-2">
@@ -204,19 +228,21 @@ export default function Dashboard({
                       </div>
                       <div className="flex gap-2 justify-between items-center flex-wrap">
                         <div className="flex flex-wrap gap-2">
-                        {todo.tags.map((tag, index) => (
-                          <Badge
-                            variant="outline"
-                            key={index}
-                            className="p-1 text-xs bg-white border-none"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
+                          {todo.tags.map((tag, index) => (
+                            <Badge
+                              variant="outline"
+                              key={index}
+                              className="p-1 text-xs bg-white border-none"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                         <div className="text-right flex justify-end items-center text-gray-800 gap-5">
                           <div className="text-gray-100 flex lg:flex-col gap-2 justify-end items-end">
-                            <span className="hidden lg:block">Last Updated</span>
+                            <span className="hidden lg:block">
+                              Last Updated
+                            </span>
                             <span>
                               {todo.updatedAt.getDate() +
                                 "/" +
@@ -243,28 +269,52 @@ export default function Dashboard({
         </div>
         <div className="bg-red-400/55 p-2 lg:p-4 rounded-xl max-h-[400px] flex flex-col">
           <div className="flex justify-between items-center px-2">
-            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <ListTodo className="w-6 h-6 font-bold"/> On Going</span>
+            <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center">
+              {" "}
+              <ListTodo className="w-6 h-6 font-bold" /> On Going
+            </span>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-                onClick={() =>
-                  handleChange(checkedProgressList, TaskStatusEnum.TOBE)
-                }
-              >
-                <LayoutList className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-                onClick={() =>
-                  handleChange(checkedProgressList, TaskStatusEnum.COMPLETED)
-                }
-              >
-                <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                      onClick={() =>
+                        handleChange(checkedProgressList, TaskStatusEnum.TOBE)
+                      }
+                    >
+                      <LayoutList className="text-gray-100 hover:text-gray-400 w-6 h-6 font-bold" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-100 text-gray-900">
+                    <span>Mark as TODO</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                      onClick={() =>
+                        handleChange(
+                          checkedProgressList,
+                          TaskStatusEnum.COMPLETED
+                        )
+                      }
+                    >
+                      <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-100 text-gray-900">
+                    <span>Mark as Completed</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           <div className="overflow-hidden flex flex-col flex-grow mt-2">
@@ -371,19 +421,21 @@ export default function Dashboard({
                       </div>
                       <div className="flex gap-2 justify-between items-center flex-wrap">
                         <div className="flex flex-wrap gap-2">
-                        {todo.tags.map((tag, index) => (
-                          <Badge
-                            variant="outline"
-                            key={index}
-                            className="p-1 text-xs bg-white border-none"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
+                          {todo.tags.map((tag, index) => (
+                            <Badge
+                              variant="outline"
+                              key={index}
+                              className="p-1 text-xs bg-white border-none"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                         <div className="text-right flex justify-end items-center text-gray-800 gap-5">
                           <div className="text-gray-100 flex lg:flex-col gap-2 justify-end items-end">
-                            <span className="hidden lg:block">Last Updated</span>
+                            <span className="hidden lg:block">
+                              Last Updated
+                            </span>
                             <span>
                               {todo.updatedAt.getDate() +
                                 "/" +
@@ -411,28 +463,52 @@ export default function Dashboard({
       </div>
       <div className="bg-emerald-400/55 p-2 lg:p-4 rounded-xl">
         <div className="flex justify-between items-center px-2">
-          <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center"> <ListChecks className="w-5 h-5 font-bold"/> Completed</span>
+          <span className="text-gray-100 ml-2 font-bold flex gap-2 items-center">
+            {" "}
+            <ListChecks className="w-5 h-5 font-bold" /> Completed
+          </span>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-              onClick={() =>
-                handleChange(checkedCompletedList, TaskStatusEnum.IN_PROGRESS)
-              }
-            >
-              <LayoutList className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-              onClick={() =>
-                handleChange(checkedCompletedList, TaskStatusEnum.TOBE)
-              }
-            >
-              <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6" />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                    onClick={() =>
+                      handleChange(checkedCompletedList, TaskStatusEnum.TOBE)
+                    }
+                  >
+                    <LayoutList className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-100 text-gray-900">
+                  <span>Mark as TODO</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                    onClick={() =>
+                      handleChange(
+                        checkedCompletedList,
+                        TaskStatusEnum.IN_PROGRESS
+                      )
+                    }
+                  >
+                    <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-100 text-gray-900">
+                  <span>Mark as InProgress</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <div className="overflow-hidden flex flex-col flex-grow mt-2">

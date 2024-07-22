@@ -1,19 +1,25 @@
 "use client";
 import React from "react";
-import AddTaskImp from "@/components/shared/important/AddTaskImp";
 import { TaskPriorityEnum, TaskStatusEnum, TaskType } from "@/types";
 import DeleteTaskImp from "./DeleteTaskImp";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  ChevronLeft,
-  ChevronsLeft,
   CircleCheck,
   Circle,
-  CheckCheck,
+  BadgeAlert,
+  LayoutList,
+  ListTodo,
+  ListChecks,
 } from "lucide-react";
 import { changeTodoStatus } from "@/actions/tasks";
 import EditTaskImp from "./EditTaskImp";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Important({
   data,
@@ -43,36 +49,68 @@ export default function Important({
       </div>
       <div className="flex flex-col gap-4 md:min-w-[700px] h-[700px] md:min-h-[700px] bg-gray-700 mt-5 rounded-lg p-5">
         <div className="flex justify-between items-center px-2">
-          <span className="text-gray-100 ml-2 font-bold">Important Tasks</span>
+          <span className="text-gray-100 ml-2 font-bold flex items-center gap-2">
+            <BadgeAlert className="w-5 h-5 font-bold text-red-400" /> Important
+            Tasks
+          </span>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-              onClick={() => handleChange(checkedList, TaskStatusEnum.TOBE)}
-            >
-              <ChevronLeft className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-              onClick={() =>
-                handleChange(checkedList, TaskStatusEnum.IN_PROGRESS)
-              }
-            >
-              <ChevronsLeft className="text-gray-100 hover:text-gray-400 w-6 h-6" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
-              onClick={() =>
-                handleChange(checkedList, TaskStatusEnum.COMPLETED)
-              }
-            >
-              <CheckCheck className="text-gray-100 hover:text-gray-400 w-6 h-6" />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                    onClick={() =>
+                      handleChange(checkedList, TaskStatusEnum.TOBE)
+                    }
+                  >
+                    <LayoutList className="text-gray-100 hover:text-gray-400 w-5 h-5 font-bold" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-100 text-gray-900">
+                  <span>Mark as TODO</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                    onClick={() =>
+                      handleChange(checkedList, TaskStatusEnum.IN_PROGRESS)
+                    }
+                  >
+                    <ListTodo className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-100 text-gray-900">
+                  <span>Mark as InProgress</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="p-0 h-fit w-fit bg-transparent border-none hover:bg-transparent hover:text-gray-400"
+                    onClick={() =>
+                      handleChange(checkedList, TaskStatusEnum.COMPLETED)
+                    }
+                  >
+                    <ListChecks className="text-gray-100 hover:text-gray-400 w-6 h-6" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-100 text-gray-900">
+                  <span>Mark as Completed</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <div className="overflow-hidden flex flex-col flex-grow mt-2">
@@ -86,7 +124,7 @@ export default function Important({
                   >
                     <div className="flex flex-col justify-start w-[300px] items-start md:items-center gap-3 lg:gap-5 md:w-full">
                       <div className="text-xs text-gray-100 flex justify-start md:justify-between gap-3 w-[300px] md:w-full">
-                        <div className="flex justify-between md:justify-start gap-2 w-full md:w-full md:px-2">  
+                        <div className="flex justify-between md:justify-start gap-2 w-full md:w-full md:px-2">
                           {checkedList.includes(todo.id) ? (
                             <Button
                               variant="outline"
@@ -122,38 +160,38 @@ export default function Important({
                           )}
                           <div className="flex gap-2">
                             <Badge
-                            className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
-                              todo.priority === TaskPriorityEnum.HIGH
-                                ? "bg-red-500/75"
-                                : todo.priority === TaskPriorityEnum.MEDIUM
-                                ? "bg-yellow-500/75"
-                                : "bg-green-500/75"
-                            }`}
-                          >
-                            {todo.priority}
-                          </Badge>
-                          {todo.status === TaskStatusEnum.COMPLETED ? (
-                            <Badge
-                              className="p-1 text-xs bg-green-500/75 border-none text-gray-100"
-                              variant="outline"
+                              className={`p-1 text-xs text-gray-100 bg-destructive/75 border-none ${
+                                todo.priority === TaskPriorityEnum.HIGH
+                                  ? "bg-red-500/75"
+                                  : todo.priority === TaskPriorityEnum.MEDIUM
+                                  ? "bg-yellow-500/75"
+                                  : "bg-green-500/75"
+                              }`}
                             >
-                              COMPLETED
+                              {todo.priority}
                             </Badge>
-                          ) : todo.status === TaskStatusEnum.IN_PROGRESS ? (
-                            <Badge
-                              className="p-1 text-xs bg-yellow-500/75 border-none text-gray-100"
-                              variant="outline"
-                            >
-                              IN PROGRESS
-                            </Badge>
-                          ) : (
-                            <Badge
-                              className="p-1 text-xs bg-blue-500/75 border-none text-gray-100"
-                              variant="outline"
-                            >
-                              TODO
-                            </Badge>
-                          )}
+                            {todo.status === TaskStatusEnum.COMPLETED ? (
+                              <Badge
+                                className="p-1 text-xs bg-green-500/75 border-none text-gray-100"
+                                variant="outline"
+                              >
+                                COMPLETED
+                              </Badge>
+                            ) : todo.status === TaskStatusEnum.IN_PROGRESS ? (
+                              <Badge
+                                className="p-1 text-xs bg-yellow-500/75 border-none text-gray-100"
+                                variant="outline"
+                              >
+                                IN PROGRESS
+                              </Badge>
+                            ) : (
+                              <Badge
+                                className="p-1 text-xs bg-blue-500/75 border-none text-gray-100"
+                                variant="outline"
+                              >
+                                TODO
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -167,15 +205,15 @@ export default function Important({
                       </div>
                       <div className="text-right flex md:flex-wrap justify-between md:items-center text-gray-800 gap-2 w-[300px] md:w-full md:px-2">
                         <div className="flex gap-2 flex-wrap">
-                        {todo.tags.map((tag, index) => (
-                          <Badge
-                            variant="outline"
-                            key={index}
-                            className="p-1 text-xs bg-white border-none w-fit h-fit"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
+                          {todo.tags.map((tag, index) => (
+                            <Badge
+                              variant="outline"
+                              key={index}
+                              className="p-1 text-xs bg-white border-none w-fit h-fit"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                         <div className="text-gray-100 flex md:flex-col gap-2 justify-end items-center">
                           <span className="hidden lg:block">Last Updated</span>

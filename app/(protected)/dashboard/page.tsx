@@ -22,7 +22,7 @@ export default async function DashboardPage() {
         <div className="fixed bottom-0 p-5 mx-auto -ml-16 justify-center items-center left-1/2 -translate-x-1/2 z-10">
           <AddTask id={userId} />
         </div>
-        <div>
+        <div className="h-[900px] md:h-full">
           <Dashboard data={data} userId={userId} />
         </div>
       </div>
