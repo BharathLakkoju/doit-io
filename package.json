@@ -27,6 +27,7 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-table": "^8.19.3",
     "@types/bcryptjs": "^2.4.6",
+    "@vercel/speed-insights": "^1.0.12",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -62,6 +63,7 @@
   "trustedDependencies": [
     "@prisma/client",
     "@prisma/engines",
+    "@vercel/speed-insights",
     "aws-sdk",
     "bcrypt",
     "core-js",

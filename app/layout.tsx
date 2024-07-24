@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/shared/SessionProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
 
 const robotoMono = Roboto_Mono({ weight: "400", subsets: ["latin"] });
@@ -22,6 +23,7 @@ export default function RootLayout({
         <SessionProvider>
           {/* <ErrorBoundary errorComponent={errorComp}>{children}</ErrorBoundary> */}
           {children}
+          <SpeedInsights />
           <Toaster />
         </SessionProvider>
       </body>
