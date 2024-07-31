@@ -34,7 +34,7 @@ import {
   SelectItem,
 } from "@/components/ui/select"; // Import Select components
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 
 const TaskPriority = [
   {
@@ -66,7 +66,7 @@ const TaskStatus = [
   },
 ];
 
-export default function AddTask({ id }: { id: string }) {
+export default function AddTask({ id, Icon }: { id: string; Icon?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
@@ -125,7 +125,7 @@ export default function AddTask({ id }: { id: string }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <div className="px-4 py-2 text-sm rounded-lg bg-gray-100 text-zinc-800 hover:text-gray-700 hover:bg-gray-300 shadow-lg shadow-gray-900 drop-shadow-xl">
-            Add Task
+            {Icon ? <Plus className="size-5 text-gray-900" /> : "Add Task"}
           </div>
         </DialogTrigger>
         <DialogContent className="max-w-[350px] sm:max-w-[425px] bg-zinc-900 text-gray-200 rounded-xl">
@@ -193,8 +193,7 @@ export default function AddTask({ id }: { id: string }) {
                         type="text"
                         required
                         onBlur={(e) => {
-                          const tags = e.target.value
-                            .split(/[,;]+/)
+                          const tags = e.target.value.split(/[,;]+/);
                           field.onChange(tags);
                         }}
                       />

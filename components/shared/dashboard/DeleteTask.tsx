@@ -3,8 +3,15 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { deleteTask } from "@/actions/tasks";
 import { useToast } from "@/components/ui/use-toast";
+import { Trash2 } from "lucide-react";
 
-export default function DeleteTask({ checkedList }: { checkedList: string[] }) {
+export default function DeleteTask({
+  checkedList,
+  Icon,
+}: {
+  checkedList: string[];
+  Icon?: boolean;
+}) {
   const { toast } = useToast();
   const handleDeleteTask = async () => {
     // Implement delete task logic here
@@ -32,8 +39,12 @@ export default function DeleteTask({ checkedList }: { checkedList: string[] }) {
 
   return (
     <>
-      <Button variant="destructive" className="shadow-lg shadow-gray-900 drop-shadow-xl" onClick={handleDeleteTask}>
-        Delete Task
+      <Button
+        variant="destructive"
+        className="shadow-lg shadow-gray-900 drop-shadow-xl"
+        onClick={handleDeleteTask}
+      >
+        {Icon ? <Trash2 className="size-5 text-gray-100" /> : "Delete Task"}
       </Button>
     </>
   );

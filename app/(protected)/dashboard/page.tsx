@@ -18,6 +18,9 @@ export default async function DashboardPage() {
             Welcome back,{" "}
             <span className="text-blue-400 font-medium">{userName}</span>
           </span>
+          <div className="hidden lg:flex lg:w-[150px]">
+            <AddTask id={userId} Icon />
+          </div>
         </div>
         <div className="fixed bottom-0 p-5 mx-auto -ml-16 justify-center items-center left-1/2 -translate-x-1/2 z-10">
           <AddTask id={userId} />

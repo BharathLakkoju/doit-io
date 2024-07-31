@@ -652,6 +652,9 @@ export default function Dashboard({
       <div className="fixed bottom-0 p-5 mx-auto ml-16 justify-center items-center left-1/2 -translate-x-1/2 z-10">
         <DeleteTask checkedList={checkedList} />
       </div>
+      <div className="hidden lg:flex fixed top-16 mt-3 p-5 mx-auto justify-center items-center right-60 -translate-x-1/2 z-10">
+        <DeleteTask checkedList={checkedList} Icon />
+      </div>
     </div>
   );
 }
